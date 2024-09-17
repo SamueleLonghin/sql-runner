@@ -58,6 +58,7 @@ $('#query-form').on('submit', function (e) {
                 }
                 table += '</tbody></table>';
                 $('#results').html(table);
+                $('#count').html("Ottenuti "+ response.count + " record")
             }
         },
         error: function (xhr, textStatus, error) {
@@ -96,3 +97,23 @@ $('.column-list>li, .table-item>strong').on('click', (e, f) => {
         next();
     });
 });
+
+
+// Funzione per espandere e comprimere le colonne
+function toggleExpand(columnId) {
+    var column = document.getElementById(columnId);
+    var lockButton = document.getElementById('lock-btn-' + columnId);
+
+    // Se la colonna è già espansa e bloccata
+    if (column.classList.contains('expanded')) {
+        // Rimuovi la classe espansa
+        column.classList.remove('expanded');
+        // Cambia l'icona del pulsante in un lucchetto aperto
+        lockButton.innerHTML = '<i class="fas fa-lock-open"></i>';
+    } else {
+        // Aggiungi la classe espansa
+        column.classList.add('expanded');
+        // Cambia l'icona del pulsante in un lucchetto chiuso
+        lockButton.innerHTML = '<i class="fas fa-lock"></i>';
+    }
+}

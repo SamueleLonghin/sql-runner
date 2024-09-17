@@ -1,6 +1,4 @@
 <!-- Colonna destra per visualizzare le tabelle e gli attributi -->
-<div class="col-md-3">
-    <h5>Database Tables and Columns</h5>
     {% if tables %}
     <ul class="table-list">
         {% for table, columns in tables.items() %}
@@ -17,46 +15,3 @@
     {% else %}
     <p class="text-danger">No tables available for the selected database.</p>
     {% endif %}
-</div>
-
-
-<style>
-    /* Personalizza la visualizzazione delle tabelle e delle colonne */
-    .table-list {
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-    }
-
-    .table-item {
-        margin-bottom: 10px;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-item strong {
-        display: block;
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-        color: #007bff;
-    }
-
-    .column-list {
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-    }
-
-    .column-list li {
-        display: inline-block;
-        background-color: #e9ecef;
-        padding: 2px 6px;
-        border-radius: 4px;
-        margin: 2px 1px;
-        /*margin-right: 5px;*/
-        font-size: 0.95rem;
-        color: #495057;
-    }
-</style>

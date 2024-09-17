@@ -12,26 +12,25 @@
 <!-- Include la navbar -->
 {% include 'navbar.html' %}
 <div class="container-fluid">
-    <div class="row">
-        <!-- Storico delle query -->
-        <div class="col-md-3">
-            <!--            <h5>Query History</h5>-->
-            <!--            <ul class="list-group" id="history">-->
-            <!--                {% for query in query_history %}-->
-            <!--                <li class="list-group-item storico-item">{{ query }}</li>-->
-            <!--                {% endfor %}-->
-            <!--            </ul>-->
-
-            <h5>Query History</h5>
-            <ul class="history-list">
-                {% for query in query_history %}
-                <li class="history-item">{{ query }}</li>
-                {% endfor %}
-            </ul>
+    <div class="d-flex flex-row">
+        <div class=" compressed col-history" id="left-col">
+            <div class="compressed-title">
+                <h5 class="">History</h5>
+                <button class="btn btn-light expand-btn" onclick="toggleExpand('left-col')" id="lock-btn-left-col">
+                    <i class="fas fa-lock-open expand-btn"></i>
+                </button>
+            </div>
+            <div class="column-content">
+                <ul class="history-list">
+                    {% for query in query_history %}
+                    <li class="history-item">{{ query }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
 
         <!-- Editor centrale per inserire la query -->
-        <div class="col">
+        <div class="flex-grow-1 mx-3">
             <h2 class="text-center">SQL Query Tester</h2>
 
             {% if selected_db %}
@@ -40,15 +39,31 @@
                                                       placeholder="Write your SQL query here..."></textarea>
                 <button type="submit" class="btn btn-primary mt-3">Execute Query</button>
             </form>
-
-            <!-- Risultati della query -->
-            <div id="results" class="mt-4"></div>
             {% else %}
             <p class="text-danger">Please select a database to execute queries.</p>
             {% endif %}
-        </div>
 
-        {% include 'tables.html' %}
+            <!-- Risultati della query -->
+            <!--            <div id="results" class="mt-4"></div>-->
+        </div>
+        <div class=" compressed col-tables" id="right-col">
+            <div class="compressed-title">
+                <button class="btn btn-light expand-btn" onclick="toggleExpand('right-col')" id="lock-btn-right-col">
+                    <i class="fas fa-lock-open expand-btn"></i>
+                </button>
+                <h5 class="text-end">Tabelle e Attributi</h5>
+            </div>
+            <div class="column-content">
+                {% include 'tables.html' %}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row justify-content-center">
+        <!-- Risultati della query -->
+        <div class="mt-4">
+            <h5 id="count" class=""></h5>
+            <div id="results" class=""></div>
+        </div>
 
     </div>
 </div>
@@ -58,21 +73,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/show-hint.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/sql-hint.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // tablesAndColumns= {
-    //     {% for table, columns in tables.items() %}
-    //         "{{ table }}": [
-    //             {% for column in columns %}
-    //                 "{{ column }}"{% if not loop.last %}, {% endif %}
-    //             {% endfor %}
-    //         ]{% if not loop.last %}, {% endif %}
-    //     {% endfor %}
-    // };
-    //
-    var tablesAndColumns = {{ tables_and_columns | safe }}
 
-</script>
-
+{% include 'script.html' %}
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 {% endblock %}

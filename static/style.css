@@ -1,3 +1,238 @@
+/*body {*/
+/*    font-family: Arial, sans-serif;*/
+/*    background-color: #f8f9fa;*/
+/*}*/
+
+/*#editor {*/
+/*    height: 150px;*/
+/*    border: 1px solid #ddd;*/
+/*    margin-top: 20px;*/
+/*}*/
+
+/*#results {*/
+/*    margin-top: 20px;*/
+/*}*/
+
+/*#history {*/
+/*    max-height: 300px;*/
+/*    overflow-y: auto;*/
+/*}*/
+
+
+/*.login-container {*/
+/*    max-width: 400px;*/
+/*    margin: 100px auto;*/
+/*    background: white;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.login-title {*/
+/*    text-align: center;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.register-container {*/
+/*    max-width: 400px;*/
+/*    margin: 100px auto;*/
+/*    background: white;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.register-title {*/
+/*    text-align: center;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.storico-item {*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.table-list {*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    list-style-type: none;*/
+/*}*/
+
+/*.table-item {*/
+/*    margin-bottom: 10px;*/
+/*    padding: 10px;*/
+/*    background-color: #f8f9fa;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.table-item strong {*/
+/*    display: block;*/
+/*    font-size: 1.1rem;*/
+/*    margin-bottom: 5px;*/
+/*    color: #007bff;*/
+/*}*/
+
+/*.column-list,*/
+/*.history-list {*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*}*/
+
+
+/*!* Stile per lo storico delle query *!*/
+/*.history-item {*/
+/*    display: block;*/
+/*    background-color: white;*/
+/*    font-size: 0.85rem;*/
+/*    padding: 4px 10px;*/
+/*    !*background-color: #f8f9fa;*!*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*    !*margin-bottom: 10px;*!*/
+/*    margin-right: 5px;*/
+/*    margin-bottom: 5px;*/
+/*}*/
+
+/*!**/
+/*Colonne esterne*/
+/* *!*/
+/*!* Colonne esterne compresse *!*/
+/*.compressed {*/
+/*    width: 100px; !* Larghezza iniziale *!*/
+/*    transition: all 0.3s ease;*/
+/*    overflow-x: hidden;*/
+/*    position: relative;*/
+/*}*/
+
+/*!* Pulsante per espandere *!*/
+/*.expand-btn {*/
+/*    position: absolute;*/
+/*    top: 0px;*/
+/*    right: 0px;*/
+/*    z-index: 1;*/
+/*    padding: 0;*/
+/*}*/
+
+/*.compressed-title {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    right: 0;*/
+/*    left: 0;*/
+/*    z-index: 1;*/
+/*    margin-inline: auto;*/
+/*    padding-left: .75rem;*/
+/*    padding-right: .75rem;*/
+/*    width: auto;*/
+/*    !*display: flex;*!*/
+/*    align-items: center; !* Allinea verticalmente il testo e il pulsante *!*/
+/*    !*justify-content: space-between; !* Spazio tra il titolo e il pulsante *!*!*/
+/*    !*margin-bottom: 10px; !* Spazio sotto il titolo *!*!*/
+/*}*/
+
+/*!* Espandi colonne al hover *!*/
+/*.compressed:hover, .compressed.expanded {*/
+/*    width: 30%; !* Larghezza da espandere *!*/
+/*}*/
+
+
+/*.column-content {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    width: 30vw; !* Larghezza del contenuto espanso *!*/
+/*}*/
+
+/*.compressed-title + .column-content {*/
+/*    margin-top: 30px;*/
+/*}*/
+
+
+/*.column-list {*/
+/*    display: none;*/
+/*}*/
+
+/*.compressed:hover .column-list,*/
+/*.compressed.expanded .column-list {*/
+/*    display: block;*/
+/*}*/
+
+/* Personalizza la visualizzazione delle tabelle e delle colonne */
+/*   .table-list {*/
+/*       padding: 0;*/
+/*       margin: 0;*/
+/*       list-style-type: none;*/
+/*   }*/
+
+/*   .table-item {*/
+/*       margin-bottom: 10px;*/
+/*       padding: 10px;*/
+/*       background-color: #f8f9fa;*/
+/*       border-radius: 8px;*/
+/*       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*   }*/
+
+/*   .table-item strong {*/
+/*       display: block;*/
+/*       font-size: 1.1rem;*/
+/*       margin-bottom: 5px;*/
+/*       color: #007bff;*/
+/*   }*/
+
+/*   .column-list {*/
+/*       padding: 0;*/
+/*       margin: 0;*/
+/*       list-style-type: none;*/
+/*   }*/
+
+/*   .column-list li {*/
+/*       display: inline-block;*/
+/*       background-color: #e9ecef;*/
+/*       padding: 2px 6px;*/
+/*       border-radius: 4px;*/
+/*       margin: 2px 1px;*/
+/*       font-size: 0.95rem;*/
+/*       color: #495057;*/
+/*   }*/
+
+
+/*!* Personalizza la visualizzazione delle tabelle e delle colonne *!*/
+/*.table-list {*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    list-style-type: none;*/
+/*}*/
+
+/*.table-item {*/
+/*    margin-bottom: 10px;*/
+/*    padding: 10px;*/
+/*    background-color: #f8f9fa;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.table-item strong {*/
+/*    display: block;*/
+/*    font-size: 1.1rem;*/
+/*    margin-bottom: 5px;*/
+/*    color: #007bff;*/
+/*}*/
+
+/*.column-list {*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    list-style-type: none;*/
+/*}*/
+
+/*.column-list li {*/
+/*    display: inline-block;*/
+/*    background-color: #e9ecef;*/
+/*    padding: 2px 6px;*/
+/*    border-radius: 4px;*/
+/*    margin: 2px 1px;*/
+/*    font-size: 0.95rem;*/
+/*    color: #495057;*/
+/*}*/
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
@@ -18,20 +253,7 @@ body {
     overflow-y: auto;
 }
 
-
-.login-container {
-    max-width: 400px;
-    margin: 100px auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-title {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
+.login-container,
 .register-container {
     max-width: 400px;
     margin: 100px auto;
@@ -40,16 +262,23 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
+.login-title,
 .register-title {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.nav-item-right {
+    margin-left: auto;
 }
 
 .storico-item {
     cursor: pointer;
 }
 
-.table-list {
+.table-list,
+.column-list,
+.history-list {
     padding: 0;
     margin: 0;
     list-style-type: none;
@@ -70,31 +299,121 @@ body {
     color: #007bff;
 }
 
-.column-list,
-.history-list {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
+/* Stile per lo storico delle query */
+.history-item {
+    display: block;
+    background-color: white;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 
-.column-list li,
-.history-list li {
+/* Colonne esterne compresse */
+.compressed {
+    width: 100px; /* Larghezza iniziale */
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+    position: relative;
+}
+
+
+/* Titolo della colonna compressa */
+.compressed-title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    margin-inline: auto;
+    padding: 0 0.75rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Espandi colonne al hover e al click */
+.compressed:hover,
+.compressed.expanded {
+    width: 30%; /* Larghezza da espandere */
+}
+
+.column-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /*width: 30vw; !* Larghezza del contenuto espanso *!*/
+}
+
+.compressed-title + .column-content {
+    margin-top: 30px;
+}
+
+/* Visualizzazione delle tabelle e delle colonne */
+.column-list li {
     display: inline-block;
     background-color: #e9ecef;
     padding: 2px 6px;
     border-radius: 4px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    font-size: 0.85rem;
+    margin: 2px 1px;
+    font-size: 0.95rem;
     color: #495057;
 }
 
-/* Stile per lo storico delle query */
-.history-item {
+.column-list {
+    display: none;
+}
+
+.compressed:hover .column-list,
+.compressed.expanded .column-list {
     display: block;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
+    z-index: 100;
+}
+
+.col-history {
+    width: 100px; /* Larghezza iniziale */
+}
+
+.col-tables {
+    width: 200px; /* Larghezza iniziale */
+}
+
+/* Espandi colonne al hover e al click */
+.compressed.col-history:hover,
+.compressed.col-history.expanded,
+.col-history .column-content {
+    width: 25vw; /* Larghezza da espandere */
+}
+
+
+/* Espandi colonne al hover e al click */
+.compressed.col-tables:hover,
+.compressed.col-tables.expanded,
+.col-tables .column-content {
+    width: 30vw; /* Larghezza da espandere */
+}
+
+
+/* Pulsante per espandere */
+.expand-btn {
+    position: absolute;
+    top: 0;
+    /*right: 0;*/
+    z-index: 1;
+    padding: 0;
+}
+
+.col-history .expand-btn {
+    right: 0;
+}
+
+.col-tables .expand-btn {
+    left: 0;
+}
+
+.compressed-title h5 {
+    width: 100%;
 }

@@ -34,12 +34,11 @@ def index():
     query_history = [qh.query_text for qh in
                      QueryHistory.query.filter_by(user_id=user_id, db_name=selected_db).order_by(
                          QueryHistory.timestamp.desc()).all()]
+
     tables = get_tables_and_columns(selected_db)
-    print(tables)
 
     # Carica simboli aggiuntivi dal file JSON
     additional_symbols = ADDITIONAL_SYMBOLS
-    print(additional_symbols)
 
     # Combina i dati delle tabelle con i simboli extra
     tables_and_columns = {**tables, **additional_symbols}
@@ -103,7 +102,7 @@ def execute_query():
             data = [list(row) for row in result.fetchall()]
 
         # Restituisce i dati e le colonne come JSON
-        return jsonify({'columns': list(columns), 'data': data})
+        return jsonify({'columns': list(columns), 'data': data, 'count': len(data)})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
