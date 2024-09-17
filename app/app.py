@@ -27,7 +27,7 @@ db = SQLAlchemy(app)
 # Route principale per visualizzare la pagina
 @app.route('/')
 def index():
-    return render_template('index2.html')
+    return render_template('index.html')
 
 
 # Endpoint per eseguire le query SQL
