@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, session, abort
 from flask import redirect, url_for, render_template
 from sqlalchemy import create_engine, text, inspect
 
-from db_config import get_read_only_uri, db, AUTHORIZED_DATABASES
+from db_config import get_read_only_uri, db, AUTHORIZED_DATABASES, ADDITIONAL_SYMBOLS
 from history_routes import log_query_history
 from models import QueryHistory, User
 
@@ -35,9 +35,17 @@ def index():
                      QueryHistory.query.filter_by(user_id=user_id, db_name=selected_db).order_by(
                          QueryHistory.timestamp.desc()).all()]
     tables = get_tables_and_columns(selected_db)
+    print(tables)
+
+    # Carica simboli aggiuntivi dal file JSON
+    additional_symbols = ADDITIONAL_SYMBOLS
+    print(additional_symbols)
+
+    # Combina i dati delle tabelle con i simboli extra
+    tables_and_columns = {**tables, **additional_symbols}
 
     return render_template('index.html', available_dbs=available_dbs, selected_db=selected_db,
-                           query_history=query_history, user=user, tables=tables)
+                           query_history=query_history, user=user, tables=tables, tables_and_columns=tables_and_columns)
 
 
 @query_bp.route('/choose_db', methods=['POST'])

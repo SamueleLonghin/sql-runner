@@ -44,3 +44,57 @@ body {
     text-align: center;
     margin-bottom: 20px;
 }
+
+.storico-item {
+    cursor: pointer;
+}
+
+.table-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.table-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-item strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.column-list,
+.history-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.column-list li,
+.history-list li {
+    display: inline-block;
+    background-color: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+/* Stile per lo storico delle query */
+.history-item {
+    display: block;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}

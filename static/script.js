@@ -1,4 +1,4 @@
-var tablesAndColumns = {};
+// var tablesAndColumns = {};
 
 // Inizializza CodeMirror per l'editor SQL
 var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
@@ -12,16 +12,16 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     }
 });
 
-
-// Caricamento delle tabelle e colonne dal backend
-$.ajax({
-    url: '/schema-info',
-    method: 'GET',
-    success: function (response) {
-        tablesAndColumns = response;
-        editor.setOption('hintOptions', {tables: tablesAndColumns});
-    }
-});
+//
+// // Caricamento delle tabelle e colonne dal backend
+// $.ajax({
+//     url: '/schema-info',
+//     method: 'GET',
+//     success: function (response) {
+//         tablesAndColumns = response;
+//         editor.setOption('hintOptions', {tables: tablesAndColumns});
+//     }
+// });
 
 // Aggiunge la funzionalità di autocompletamento su Ctrl-Space
 editor.on('inputRead', function (instance, event) {
@@ -72,7 +72,27 @@ $('#query-form').on('submit', function (e) {
 });
 
 
-$('.storico-item').on('click', (e, f) => {
+$('.history-item').on('click', (e, f) => {
     console.log(e.target.innerHTML);
     editor.setValue(e.target.innerHTML)
+});
+
+$('.column-list>li, .table-item>strong').on('click', (e, f) => {
+    console.log(e.target.innerHTML);
+    var textToInsert = e.target.innerHTML + ' ';  // Ottieni il testo cliccato
+
+    // Ottieni la posizione corrente del cursore in CodeMirror
+    var doc = editor.getDoc();
+    var cursor = doc.getCursor();  // Ottieni la posizione corrente del cursore
+
+    // Inserisci il testo alla posizione del cursore
+    doc.replaceRange(textToInsert, cursor);
+
+    // Focus sull'editor per continuare a scrivere
+    editor.focus();
+
+    $(e.target).css('background-color', '#d4edda').delay(300).queue(function (next) {
+        $(this).css('background-color', '');  // Rimuovi l'evidenziazione dopo 100ms
+        next();
+    });
 });
