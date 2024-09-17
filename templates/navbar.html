@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Esercitatore SQL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Selettore del database -->
+            <form action="{{ url_for('query_bp.choose_db') }}" method="POST" class="d-flex">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <span class="nav-link">Database</span>
+                    </li>
+                </ul>
+                <select class="form-select me-2" id="db_name" name="db_name" onchange="this.form.submit()">
+                    <option selected disabled>Select a database...</option>
+                    {% for db in available_dbs %}
+                    <option value="{{ db }}" {% if db== selected_db %}selected{% endif %}>{{ db }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <!-- Nome utente -->
+            <ul class="navbar-nav align-rigth">
+<!--                <li class="nav-item">-->
+<!--                    <span class="nav-link">Benvenuto {{ user.username }}</span>-->
+<!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('history_bp.logout') }}">Logout ({{ user.username}})</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

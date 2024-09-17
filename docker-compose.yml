@@ -1,34 +1,74 @@
 version: '3.8'
 
 services:
+  # Servizio Flask (web)
   web:
-    image: python:3.9   # Usa direttamente l'immagine Python, senza Dockerfile
-    working_dir: /app    # La directory di lavoro nel container
+    image: python:3.9
+    working_dir: /app
     volumes:
-      - ./app:/app           # Monta la cartella corrente (dove c'è il docker-compose.yml) dentro /app
+      - .:/app    # Monta la directory di lavoro locale
     command: >
       sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
     environment:
       - FLASK_ENV=development
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_NAME=testdb
-      - DB_USER=root
-      - DB_PASSWORD=example
+      - READ_DB_HOST=db_read
+      - READ_DB_PORT=3308
+      - HISTORY_DB_HOST=db_history
+      - HISTORY_DB_PORT=3306
+      - READ_DB_USER=readonly_user
+      - READ_DB_PASSWORD=readonly_password
+      - READ_DB_NAMES=db1,db2,db3   # Lista dei database per la lettura
+      - HISTORY_DB_USER=history_user
+      - HISTORY_DB_PASSWORD=history_password
+      - HISTORY_DB_NAME=history_db
+      - SECRET_KEY=mysecretkey
     ports:
-      - "101:5000"      # Esponi la porta del web server
+      - "5000:5000"    # Porta per l'app Flask
     depends_on:
-      - db
+      - db_read
+      - db_history
+      - phpmyadmin
 
-  db:
-    image: mysql:8.0     # Usa direttamente l'immagine di MySQL
+  # Database per eseguire le query con accesso di sola lettura
+  db_read:
+    image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: db1
     ports:
-      - "3308:3306"      # Esponi la porta del database
+      - "3308:3306"    # Porta per il DB di sola lettura
     volumes:
-      - db_data:/var/lib/mysql  # Memorizza i dati del DB per persistenza
+      - db_read_data:/var/lib/mysql
+
+  # Database per la gestione degli utenti e dello storico
+  db_history:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: history_db
+    ports:
+      - "3307:3306"    # Porta per il DB storico
+    volumes:
+      - db_history_data:/var/lib/mysql
+
+  # phpMyAdmin per gestire i database
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db_history
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8081:80"    # Porta per accedere a phpMyAdmin
+  phpmyadmin_read:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db_read
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8080:80"    # Porta per accedere a phpMyAdmin
 
 volumes:
-  db_data:
+  db_read_data:
+  db_history_data:
