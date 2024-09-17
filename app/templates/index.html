@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/show-hint.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #editor {
+            width: 80%;
+            height: 200px;
+            border: 1px solid #ddd;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>SQL Query Editor</h1>
+<form id="query-form">
+    <textarea id="editor" name="query"></textarea><br>
+    <button type="submit">Execute Query</button>
+</form>
+
+<div id="results"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/mode/sql/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/sql-hint.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    var tablesAndColumns = {};
+
+    // Configurazione di CodeMirror con completamento automatico
+    var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+        mode: 'text/x-sql',
+        lineNumbers: true,
+        theme: 'default',
+        extraKeys: {"Ctrl-Space": "autocomplete"},
+        hintOptions: {
+            tables: tablesAndColumns
+        }
+    });
+
+    // Caricamento delle tabelle e colonne dal backend
+    $.ajax({
+        url: '/schema-info',
+        method: 'GET',
+        success: function (response) {
+            tablesAndColumns = response;
+            editor.setOption('hintOptions', {tables: tablesAndColumns});
+        }
+    });
+
+    // Esecuzione della query SQL
+    $('#query-form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/execute',
+            method: 'POST',
+            data: {
+                query: editor.getValue()
+            },
+            success: function (response) {
+                if (response.error) {
+                    $('#results').html('<p style="color:red;">' + response.error + '</p>');
+                } else {
+                    var table = '<table><thead><tr>';
+                    for (var i = 0; i < response.columns.length; i++) {
+                        table += '<th>' + response.columns[i] + '</th>';
+                    }
+                    table += '</tr></thead><tbody>';
+                    for (var i = 0; i < response.data.length; i++) {
+                        table += '<tr>';
+                        for (var j = 0; j < response.data[i].length; j++) {
+                            table += '<td>' + response.data[i][j] + '</td>';
+                        }
+                        table += '</tr>';
+                    }
+                    table += '</tbody></table>';
+                    $('#results').html(table);
+                }
+            }
+        });
+    });
+
+    // Aggiunge la funzionalità di autocompletamento su Ctrl-Space
+    editor.on('inputRead', function (instance, event) {
+        if (!instance.state.completionActive && event.keyCode !== 32) {  // Trigger autocompletion
+            CodeMirror.commands.autocomplete(editor);
+        }
+    });
+</script>
+</body>
+</html>

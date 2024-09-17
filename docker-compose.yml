@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  web:
+    image: python:3.9   # Usa direttamente l'immagine Python, senza Dockerfile
+    working_dir: /app    # La directory di lavoro nel container
+    volumes:
+      - ./app:/app           # Monta la cartella corrente (dove c'è il docker-compose.yml) dentro /app
+    command: >
+      sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
+    environment:
+      - FLASK_ENV=development
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=testdb
+      - DB_USER=root
+      - DB_PASSWORD=example
+    ports:
+      - "101:5000"      # Esponi la porta del web server
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0     # Usa direttamente l'immagine di MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: testdb
+    ports:
+      - "3308:3306"      # Esponi la porta del database
+    volumes:
+      - db_data:/var/lib/mysql  # Memorizza i dati del DB per persistenza
+
+volumes:
+  db_data:
