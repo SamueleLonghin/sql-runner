@@ -10,33 +10,34 @@ services:
     command: >
       sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
     environment:
-      - FLASK_ENV=development
-      - READ_DB_HOST=db_read
-      - READ_DB_PORT=3308
-      - HISTORY_DB_HOST=db_history
-      - HISTORY_DB_PORT=3306
-      - READ_DB_USER=readonly_user
-      - READ_DB_PASSWORD=readonly_password
-      - READ_DB_NAMES=db1,db2,db3   # Lista dei database per la lettura
-      - HISTORY_DB_USER=history_user
-      - HISTORY_DB_PASSWORD=history_password
-      - HISTORY_DB_NAME=history_db
-      - SECRET_KEY=mysecretkey
+      - FLASK_ENV=${FLASK_ENV}
+      - READ_DB_HOST=${READ_DB_HOST}
+      - READ_DB_PORT=${READ_DB_PORT}
+      - HISTORY_DB_HOST=${HISTORY_DB_HOST}
+      - HISTORY_DB_PORT=${HISTORY_DB_PORT}
+      - READ_DB_USER=${READ_DB_USER}
+      - READ_DB_PASSWORD=${READ_DB_PASSWORD}
+      - READ_DB_NAMES=${READ_DB_NAMES}   # Lista dei database per la lettura
+      - HISTORY_DB_USER=${HISTORY_DB_USER}
+      - HISTORY_DB_PASSWORD=${HISTORY_DB_PASSWORD}
+      - HISTORY_DB_NAME=${HISTORY_DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
     ports:
-      - "5000:5000"    # Porta per l'app Flask
+      - "${APP_PORT}:5000"
     depends_on:
       - db_read
       - db_history
       - phpmyadmin
+      - phpmyadmin_read
 
   # Database per eseguire le query con accesso di sola lettura
   db_read:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: db1
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: db1  # Puoi anche usare questa variabile se necessario
     ports:
-      - "3308:3306"    # Porta per il DB di sola lettura
+      - "${READ_DB_PORT}:3306"    # Porta per il DB di sola lettura
     volumes:
       - db_read_data:/var/lib/mysql
 
@@ -44,30 +45,32 @@ services:
   db_history:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: history_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${HISTORY_DB_NAME}
     ports:
-      - "3307:3306"    # Porta per il DB storico
+      - "${HISTORY_DB_PORT}:3306"    # Porta per il DB storico
     volumes:
       - db_history_data:/var/lib/mysql
 
-  # phpMyAdmin per gestire i database
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db_history
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root_password
-    ports:
-      - "8081:80"    # Porta per accedere a phpMyAdmin
+  # phpMyAdmin per gestire il database di sola lettura
   phpmyadmin_read:
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: db_read
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root_password
+      PMA_HOST: ${READ_DB_HOST}
+      PMA_PORT: ${READ_DB_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "8080:80"    # Porta per accedere a phpMyAdmin
+      - "${PMA_READ_PORT}:80"    # Porta per accedere a phpMyAdmin
+
+  # phpMyAdmin per gestire il database dello storico
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: ${HISTORY_DB_HOST}
+      PMA_PORT: ${HISTORY_DB_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PMA_HISTORY_PORT}:80"    # Porta per accedere a phpMyAdmin
 
 volumes:
   db_read_data:

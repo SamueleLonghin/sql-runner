@@ -25,6 +25,9 @@ def init_app(app):
     # Inizializza l'istanza di SQLAlchemy
     db.init_app(app)
 
+    print("Connesso a ",
+          f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}")
+
 
 # Funzione per generare dinamicamente la stringa di connessione al database di sola lettura
 def get_read_only_uri(db_name):
