@@ -1,27 +1,15 @@
-// var tablesAndColumns = {};
-
 // Inizializza CodeMirror per l'editor SQL
 var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     mode: 'text/x-sql',
     lineNumbers: true,
     theme: 'default',
     autocorrect: false,
-    // extraKeys: {"Ctrl-Space": "autocomplete"},
+    extraKeys: {"Ctrl-Space": "autocomplete"},
     hintOptions: {
         tables: tablesAndColumns
     }
 });
 
-//
-// // Caricamento delle tabelle e colonne dal backend
-// $.ajax({
-//     url: '/schema-info',
-//     method: 'GET',
-//     success: function (response) {
-//         tablesAndColumns = response;
-//         editor.setOption('hintOptions', {tables: tablesAndColumns});
-//     }
-// });
 
 // Aggiunge la funzionalità di autocompletamento su Ctrl-Space
 editor.on('inputRead', function (instance, event) {
@@ -34,6 +22,7 @@ editor.on('inputRead', function (instance, event) {
 $('#query-form').on('submit', function (e) {
     e.preventDefault();
     var query = editor.getValue();
+    $("#history").prepend('<li class="history-item">'+query+'</li>');
 
     $.ajax({
         url: '/execute',
@@ -63,7 +52,6 @@ $('#query-form').on('submit', function (e) {
         },
         error: function (xhr, textStatus, error) {
             if (xhr && xhr.responseJSON) {
-
                 $('#results').html('<p class="text-danger">Error: ' + xhr.responseJSON.error + '</p>');
             } else {
                 $('#results').html('<p class="text-danger">Error: ' + error + '</p>');
