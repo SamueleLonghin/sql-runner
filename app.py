@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-from db_config import init_app, load_additional_symbols, ADDITIONAL_SYMBOLS
+from db_config import init_app, load_additional_symbols, ADDITIONAL_SYMBOLS, AUTHORIZED_DATABASES
 from history_routes import history_bp
 from query_routes import query_bp
 
@@ -11,9 +11,6 @@ app.secret_key = os.getenv("SECRET_KEY", "mysecretkey")
 
 # Inizializza i database
 init_app(app)
-load_additional_symbols()
-
-print(ADDITIONAL_SYMBOLS)
 
 # Registra i Blueprint
 app.register_blueprint(query_bp)
