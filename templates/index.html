@@ -12,6 +12,7 @@
 <!-- Include la navbar -->
 {% include 'navbar.html' %}
 <div class="container-fluid">
+    {% if selected_db %}
     <div class="d-flex flex-row">
         <div class=" compressed col-history" id="left-col">
             <div class="compressed-title">
@@ -66,6 +67,16 @@
         </div>
 
     </div>
+    {% else %}
+    <select class="form-select me-2" id="db_name" name="db_name" onchange="this.form.submit()">
+        <option selected disabled>Select a database...</option>
+        {% for db in available_dbs %}
+        <option value="{{ db }}" {% if db== selected_db %}selected{% endif %}>{{ db }}</option>
+        {% endfor %}
+    </select>
+    {% endif %}
+
+
 </div>
 <!-- Codemirror e jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/codemirror.min.js"></script>

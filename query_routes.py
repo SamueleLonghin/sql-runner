@@ -23,19 +23,24 @@ def index():
     available_dbs = AUTHORIZED_DATABASES
     selected_db = session.get('selected_db', None)
 
-    # Verifica che il database selezionato sia nella lista dei database autorizzati
-    if selected_db not in AUTHORIZED_DATABASES:
-        session.pop('selected_db')
-        return jsonify({'error': 'Unauthorized or non-existent database selected'}), 403
-
     # Recupera lo storico delle query per l'utente loggato
     user_id = session['user_id']
     user = User.getFromID(user_id)
-    query_history = [qh.query_text for qh in
-                     QueryHistory.query.filter_by(user_id=user_id, db_name=selected_db).order_by(
-                         QueryHistory.timestamp.desc()).all()]
 
-    tables = get_tables_and_columns(selected_db)
+    tables = {}
+    query_history = []
+
+    if selected_db:
+        # Verifica che il database selezionato sia nella lista dei database autorizzati
+        if selected_db not in AUTHORIZED_DATABASES:
+            session.pop('selected_db')
+            return jsonify({'error': 'Unauthorized or non-existent database selected'}), 403
+
+        query_history = [qh.query_text for qh in
+                         QueryHistory.query.filter_by(user_id=user_id, db_name=selected_db).order_by(
+                             QueryHistory.timestamp.desc()).all()]
+
+        tables = get_tables_and_columns(selected_db)
 
     # Carica simboli aggiuntivi dal file JSON
     additional_symbols = ADDITIONAL_SYMBOLS

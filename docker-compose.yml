@@ -11,13 +11,13 @@ services:
       sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
     environment:
       - FLASK_ENV=${FLASK_ENV}
-      - READ_DB_HOST=${READ_DB_HOST}
-      - READ_DB_PORT=${READ_DB_PORT}
+      - QUERY_DB_HOST=${QUERY_DB_HOST}
+      - QUERY_DB_PORT=${QUERY_DB_PORT_I}
       - HISTORY_DB_HOST=${HISTORY_DB_HOST}
-      - HISTORY_DB_PORT=${HISTORY_DB_PORT}
-      - READ_DB_USER=${READ_DB_USER}
-      - READ_DB_PASSWORD=${READ_DB_PASSWORD}
-      - READ_DB_NAMES=${READ_DB_NAMES}   # Lista dei database per la lettura
+      - HISTORY_DB_PORT=${HISTORY_DB_PORT_I}
+      - QUERY_DB_USER=${QUERY_DB_USER}
+      - QUERY_DB_PASSWORD=${QUERY_DB_PASSWORD}
+      - QUERY_DB_NAMES=${QUERY_DB_NAMES}   # Lista dei database per la lettura
       - HISTORY_DB_USER=${HISTORY_DB_USER}
       - HISTORY_DB_PASSWORD=${HISTORY_DB_PASSWORD}
       - HISTORY_DB_NAME=${HISTORY_DB_NAME}
@@ -25,49 +25,59 @@ services:
     ports:
       - "${APP_PORT}:5000"
     depends_on:
-      - db_read
+      - db_query
       - db_history
-      - phpmyadmin
-      - phpmyadmin_read
+      - phpmyadmin_query
+      - phpmyadmin_history
 
   # Database per eseguire le query con accesso di sola lettura
-  db_read:
-    image: mysql:8.0
+
+  db_query:
+    image: mysql:8.3
+    container_name: db_query
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: db1  # Puoi anche usare questa variabile se necessario
+      MYSQL_USER: ${QUERY_DB_USER}
+      MYSQL_PASSWORD: ${QUERY_DB_PASSWORD}
     ports:
-      - "${READ_DB_PORT}:3306"    # Porta per il DB di sola lettura
+      - "${QUERY_DB_PORT_E}:3306" # Porta per il DB di sola lettura
     volumes:
       - db_read_data:/var/lib/mysql
+      - ./initdb/initdb_query.sql:/docker-entrypoint-initdb.d/init-db.sql
+    restart: always
+
+  # phpMyAdmin per gestire il database di sola lettura
+  phpmyadmin_query:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: ${QUERY_DB_HOST}
+      PMA_PORT: ${QUERY_DB_PORT_I}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PMA_QUERY_PORT}:80"    # Porta per accedere a phpMyAdmin
 
   # Database per la gestione degli utenti e dello storico
   db_history:
-    image: mysql:8.0
+    image: mysql:8.3
+    container_name: db_history
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${HISTORY_DB_NAME}
-    ports:
-      - "${HISTORY_DB_PORT}:3306"    # Porta per il DB storico
+      MYSQL_USER: ${HISTORY_DB_USER}
+      MYSQL_PASSWORD: ${HISTORY_DB_PASSWORD}
     volumes:
       - db_history_data:/var/lib/mysql
-
-  # phpMyAdmin per gestire il database di sola lettura
-  phpmyadmin_read:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: ${READ_DB_HOST}
-      PMA_PORT: ${READ_DB_PORT}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      - ./initdb/initdb_history.sql:/docker-entrypoint-initdb.d/init-db.sql
+    restart: always
     ports:
-      - "${PMA_READ_PORT}:80"    # Porta per accedere a phpMyAdmin
+      - "${HISTORY_DB_PORT_E}:3306"    # Porta per il DB storico
+
 
   # phpMyAdmin per gestire il database dello storico
-  phpmyadmin:
+  phpmyadmin_history:
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: ${HISTORY_DB_HOST}
-      PMA_PORT: ${HISTORY_DB_PORT}
+      PMA_PORT: ${HISTORY_DB_PORT_I}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "${PMA_HISTORY_PORT}:80"    # Porta per accedere a phpMyAdmin
