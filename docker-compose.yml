@@ -34,7 +34,6 @@ services:
 
   db_query:
     image: mysql:8.3
-    container_name: db_query
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${QUERY_DB_USER}
@@ -59,7 +58,6 @@ services:
   # Database per la gestione degli utenti e dello storico
   db_history:
     image: mysql:8.3
-    container_name: db_history
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${HISTORY_DB_USER}
