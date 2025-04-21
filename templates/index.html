@@ -5,6 +5,7 @@
 <!-- Aggiungi Bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/codemirror.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.0/addon/hint/show-hint.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -37,15 +38,13 @@
             {% if selected_db %}
             <form id="query-form">
                 <label for="editor"></label><textarea id="editor" name="query" class="form-control"
-                                                      placeholder="Write your SQL query here..."></textarea>
+                    placeholder="Write your SQL query here..."></textarea>
                 <button type="submit" class="btn btn-primary mt-3">Execute Query</button>
             </form>
             {% else %}
             <p class="text-danger">Please select a database to execute queries.</p>
             {% endif %}
 
-            <!-- Risultati della query -->
-            <!--            <div id="results" class="mt-4"></div>-->
         </div>
         <div class=" compressed col-tables" id="right-col">
             <div class="compressed-title">
@@ -71,7 +70,7 @@
     <select class="form-select me-2" id="db_name" name="db_name" onchange="this.form.submit()">
         <option selected disabled>Select a database...</option>
         {% for db in available_dbs %}
-        <option value="{{ db }}" {% if db== selected_db %}selected{% endif %}>{{ db }}</option>
+        <option value="{{ db }}" {% if db==selected_db %}selected{% endif %}>{{ db }}</option>
         {% endfor %}
     </select>
     {% endif %}
@@ -88,4 +87,8 @@
 {% include 'script.html' %}
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="{{ url_for('static', filename='editor.js') }}"></script>
+<script src="{{ url_for('static', filename='offline.js') }}"></script>
+<script src="{{ url_for('static', filename='online.js') }}"></script>
+<script src="{{ url_for('static', filename='query.js') }}"></script>
 {% endblock %}
