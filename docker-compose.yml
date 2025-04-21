@@ -49,7 +49,10 @@ services:
       - ./initdb/initdb_query.sql:/docker-entrypoint-initdb.d/init-db.sql
     restart: on-failure:5
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [
+        "CMD", "mysqladmin", "ping", "-h", "localhost",
+        "-u", "${QUERY_DB_USER}", "-p","${QUERY_DB_PASSWORD}"
+      ]      
       interval: 10s
       timeout: 5s
       retries: 5
@@ -83,7 +86,10 @@ services:
       - ./initdb/initdb_history.sql:/docker-entrypoint-initdb.d/init-db.sql
     restart: on-failure:5
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [
+        "CMD", "mysqladmin", "ping", "-h", "localhost",
+        "-u", "${HISTORY_DB_USER}", "-p", "${HISTORY_DB_PASSWORD}"
+      ] 
       interval: 10s
       timeout: 5s
       retries: 5
