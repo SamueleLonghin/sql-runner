@@ -1,0 +1,15 @@
+FROM python:3.9
+
+WORKDIR /app
+
+# Copia i file necessari nel container
+COPY requirements.txt .
+
+# Installa le dipendenze
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia tutto il codice nell'immagine
+COPY . .
+
+# Comando di avvio
+CMD ["flask", "run", "--host=0.0.0.0"]
