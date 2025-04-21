@@ -6,7 +6,7 @@ services:
     image: python:3.9
     working_dir: /app
     volumes:
-      - .:/app    # Monta la directory di lavoro locale
+      - ${PWD}:/app
     command: >
       sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
     environment:
