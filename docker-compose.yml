@@ -3,17 +3,12 @@ version: '3.8'
 services:
   # Servizio Flask (web)
   web:
-    # image: python:3.9
     working_dir: /app
-    # volumes:
-    #   - .:/app
 
     build:
       context: .
       dockerfile: DockerFile
 
-    # command: >
-    #   sh -c "pip install -r requirements.txt && flask run --host=0.0.0.0"
     environment:
       - FLASK_ENV=${FLASK_ENV}
       - QUERY_DB_HOST=${QUERY_DB_HOST}
@@ -117,6 +112,6 @@ volumes:
 
 
 networks:
-  sql-runner-network:
+  sql-runner-offline-network:
     # Specify driver options
     driver: bridge
