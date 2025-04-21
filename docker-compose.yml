@@ -32,7 +32,7 @@ services:
         condition: service_healthy
         restart: true
     networks:
-      - sql-runner-network
+      - sql-runner-offline-network
   # Database per eseguire le query con accesso di sola lettura
 
   db_query:
@@ -54,7 +54,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - sql-runner-network
+      - sql-runner-offline-network
   # phpMyAdmin per gestire il database di sola lettura
   phpmyadmin_query:
     image: phpmyadmin/phpmyadmin
@@ -69,7 +69,7 @@ services:
         condition: service_healthy
         restart: true
     networks:
-      - sql-runner-network
+      - sql-runner-offline-network
   # Database per la gestione degli utenti e dello storico
   db_history:
     image: mysql:8.3
@@ -90,7 +90,7 @@ services:
     ports:
       - "${HISTORY_DB_PORT_E}:3306" # Porta per il DB storico
     networks:
-      - sql-runner-network
+      - sql-runner-offline-network
   # phpMyAdmin per gestire il database dello storico
   phpmyadmin_history:
     image: phpmyadmin/phpmyadmin
@@ -105,7 +105,7 @@ services:
         condition: service_healthy
         restart: true
     networks:
-      - sql-runner-network
+      - sql-runner-offline-network
 volumes:
   db_read_data:
   db_history_data:
