@@ -17,17 +17,23 @@ ADDITIONAL_SYMBOLS = {}
 
 
 def init_app(app):
+    print(
+        "Inizializzo app: ",
+        f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}",
+    )
     # Configurazione statica per entrambi i database
-    app.config['SQLALCHEMY_BINDS'] = {
-        'history_db': f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}"
+    app.config["SQLALCHEMY_BINDS"] = {
+        "history_db": f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}"
     }
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Inizializza l'istanza di SQLAlchemy
     db.init_app(app)
 
-    print("Connesso a ",
-          f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}")
+    print(
+        "Connesso a ",
+        f"mysql+pymysql://{os.getenv('HISTORY_DB_USER')}:{os.getenv('HISTORY_DB_PASSWORD')}@{os.getenv('HISTORY_DB_HOST')}:{os.getenv('HISTORY_DB_PORT')}/{os.getenv('HISTORY_DB_NAME')}",
+    )
 
     load_additional_symbols()
     load_autorized_databases()
@@ -43,8 +49,8 @@ def load_additional_symbols():
     Carica simboli extra da un file JSON, ad esempio funzioni SQL o parole chiave.
     """
     global ADDITIONAL_SYMBOLS
-    json_path = os.path.join(os.getcwd(), 'static/extra.json')  # Percorso del file JSON
-    with open(json_path, 'r') as json_file:
+    json_path = os.path.join(os.getcwd(), "static/extra.json")  # Percorso del file JSON
+    with open(json_path, "r") as json_file:
         ADDITIONAL_SYMBOLS.update(json.load(json_file))
 
     print("Trovati:", ADDITIONAL_SYMBOLS, "In", json_path)
@@ -62,7 +68,14 @@ def load_autorized_databases():
     # Esecuzione della query
     with engine.connect() as connection:
         result = connection.execute(query)
-        excluded_databases = {'information_schema', 'mysql', 'performance_schema', 'phpmyadmin'}
-        AUTHORIZED_DATABASES.extend([row[0] for row in result if row[0] not in excluded_databases])
+        excluded_databases = {
+            "information_schema",
+            "mysql",
+            "performance_schema",
+            "phpmyadmin",
+        }
+        AUTHORIZED_DATABASES.extend(
+            [row[0] for row in result if row[0] not in excluded_databases]
+        )
 
     print("Disponibili i seguenti databases:", AUTHORIZED_DATABASES)
