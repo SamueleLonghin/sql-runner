@@ -8,7 +8,8 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     extraKeys: { "Ctrl-Space": "autocomplete" },
     hintOptions: {
         tables: tablesAndColumns
-    }
+    },
+    completeSingle: false,
 });
 
 
