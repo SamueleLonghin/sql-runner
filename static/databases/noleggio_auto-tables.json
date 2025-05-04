@@ -1,0 +1,54 @@
+{
+    "Automobili": [
+        "Marca",
+        "Modello",
+        "Anno",
+        "Targa",
+        "IdTipoAuto"
+    ],
+    "Clienti": [
+        "IdCliente",
+        "Nome",
+        "Cognome",
+        "Email",
+        "Telefono",
+        "Patente",
+        "DataNascita",
+        "Nazione"
+    ],
+    "Incidenti": [
+        "IdIncidente",
+        "IdNoleggio",
+        "TipoProblema",
+        "Descrizione",
+        "Data",
+        "CostoDanni"
+    ],
+    "Noleggi": [
+        "IdNoleggio",
+        "IdCliente",
+        "Targa",
+        "IdSedePrelevamento",
+        "IdSedeConsegna",
+        "DataInizio",
+        "DataFine",
+        "Costo",
+        "KmPercorsi"
+    ],
+    "Sedi": [
+        "IdSede",
+        "NomeSede",
+        "Indirizzo",
+        "Città",
+        "Stato",
+        "Cap"
+    ],
+    "TipiAuto": [
+        "IdTipoAuto",
+        "CostoGiornaliero",
+        "CostoKm"
+    ],
+    "INNER": [
+        "INNER"
+    ]
+}
