@@ -20,4 +20,13 @@ CREATE TABLE IF NOT EXISTS query_history
     timestamp  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+DELIMITER $$
+--
+-- Procedure
+--
+CREATE PROCEDURE `interrogazioni_da` (IN `inizio` DATE)   SELECT * FROM users_query WHERE users_query.timestamp > inizio$$
+
+DELIMITER ;
+
 GRANT ALL PRIVILEGES ON history_db.* TO 'history_user'@'%';
