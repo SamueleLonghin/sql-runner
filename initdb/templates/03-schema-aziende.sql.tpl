@@ -6,6 +6,7 @@
 -- Creato il: Ott 09, 2025 alle 16:44
 -- Versione del server: 8.3.0
 -- Versione PHP: 8.2.8
+USE `aziende`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;

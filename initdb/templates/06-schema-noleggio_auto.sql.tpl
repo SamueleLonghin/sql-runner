@@ -7,6 +7,8 @@
 -- Versione del server: 8.3.0
 -- Versione PHP: 8.2.8
 
+USE `noleggio_auto`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
