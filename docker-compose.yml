@@ -30,18 +30,19 @@ services:
       - HISTORY_DB_PORT=3306
       - QUERY_DB_USER=${QUERY_DB_USER}
       - QUERY_DB_PASSWORD=${QUERY_DB_PASSWORD}
-      - QUERY_DB_NAMES=${QUERY_DB_NAMES} # Lista dei database per la lettura
+      - QUERY_DB_NAMES=musica,museo,noleggio_auto,aziende # Lista dei database per la lettura
       - HISTORY_DB_USER=${HISTORY_DB_USER}
       - HISTORY_DB_PASSWORD=${HISTORY_DB_PASSWORD}
       - HISTORY_DB_NAME=${HISTORY_DB_NAME}
       - SECRET_KEY=${SECRET_KEY}
-    # ports:
-    #   - "${APP_PORT}:5000"
     depends_on:
       - db
     networks:
       - professore-sql-net
       - traefik_proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.services.professore-sql.loadbalancer.server.port=80"
 
   # 2) Rende gli script .tpl in veri .sql con le variabili del .env
   initdb-renderer:
@@ -60,10 +61,6 @@ services:
       '
     environment:
       - HISTORY_DB_NAME=${HISTORY_DB_NAME}
-      - DB1_NAME=${DB1_NAME}
-      - DB2_NAME=${DB2_NAME}
-      - DB3_NAME=${DB3_NAME}
-      - DB4_NAME=${DB4_NAME}
       - HISTORY_DB_USER=${HISTORY_DB_USER}
       - HISTORY_DB_PASSWORD=${HISTORY_DB_PASSWORD}
       - QUERY_DB_USER=${QUERY_DB_USER}
@@ -81,10 +78,6 @@ services:
     container_name: professore-sql-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      # Facoltativi: se lasci così, il DB non crea un "primo utente" extra
-      # usiamo i nostri script per creare utenti e permessi.
-    # ports:
-    #   - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./initdb/merged:/docker-entrypoint-initdb.d:ro
@@ -103,11 +96,12 @@ services:
       PMA_PORT: 3306
       # per login come root da pma:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    # ports:
-    #   - "${PMA_PORT:-8080}:80"
     depends_on:
       - db
     networks:
       - professore-sql-net
       - traefik_proxy
     restart: unless-stopped
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.services.professore-sql-admin.loadbalancer.server.port=8080"
