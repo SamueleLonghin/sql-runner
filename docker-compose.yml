@@ -46,11 +46,12 @@ services:
 
   # 2) Rende gli script .tpl in veri .sql con le variabili del .env
   initdb-renderer:
-    image: bash:5
+    image: alpine:3.20
     container_name: professore-sql-renderer
     command: >
       bash -lc '
         set -e;
+        apk add --no-cache gettext;
         mkdir -p /init;
         for f in /templates/*.tpl; do
           out="/init/$(basename "$${f%.tpl}")";
