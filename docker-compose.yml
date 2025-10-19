@@ -49,7 +49,7 @@ services:
     image: alpine:3.20
     container_name: professore-sql-renderer
     command: >
-      bash -lc '
+      sh -c '
         set -e;
         apk add --no-cache gettext;
         mkdir -p /init;
