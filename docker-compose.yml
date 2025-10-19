@@ -53,9 +53,9 @@ services:
         set -e;
         mkdir -p /init;
         for f in /templates/*.tpl; do
-          out="/init/$(basename "${f%.tpl}")";
-          echo "[render] $f -> $out";
-          envsubst < "$f" > "$out";
+          out="/init/$(basename "$${f%.tpl}")";
+          echo "[render] $$f -> $$out";
+          envsubst < "$$f" > "$$out";
         done;
         ls -l /init;
       '
