@@ -12,4 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Comando di avvio
-CMD ["flask", "run", "--host=0.0.0.0"]
+# CMD ["flask", "run", "--host=0.0.0.0"]
+
+RUN pip install gunicorn
+CMD ["gunicorn","-w","2","-k","gthread","-b","0.0.0.0:5000","app:app"]
+# dove "app:app" = <nome_modulo>:<variabile_app_flask>
